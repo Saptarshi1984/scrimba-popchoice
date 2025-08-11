@@ -11,7 +11,7 @@ PopChoice helps you find your next favorite movie through natural conversation. 
 
 ## **📌 Project Description**
 
-PopChoice is an AI-powered movie recommendation app built as part of the **Scrimba - AI Engineer Path** course. It combines modern frontend development with AI-driven search and recommendation logic.
+PopChoice is an AI-powered movie recommendation app built as part of the **Scrimba - The AI Engineer Path** course. It combines modern frontend development with AI-driven search and recommendation logic.
 
 Users can simply enter their movie preferences in plain English, and PopChoice uses a combination of **OpenAI’s chat completions**, **embeddings**, and **vector similarity search** (via Supabase) to deliver relevant movie suggestions.
 
@@ -37,7 +37,7 @@ Users can simply enter their movie preferences in plain English, and PopChoice u
 **Backend & AI:**
 
 * OpenAI API (Chat Completion & Embeddings)
-* Supabase (Database, RPC functions, Vector similarity search)
+* Supabase (Vector Database, RPC functions, Vector similarity search)
 
 **Design & UI/UX:**
 
@@ -55,22 +55,6 @@ Users can simply enter their movie preferences in plain English, and PopChoice u
 
 ---
 
-## **🚀 Getting Started**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
 
 ## **📚 Lessons Learned**
 
@@ -84,8 +68,6 @@ Users can simply enter their movie preferences in plain English, and PopChoice u
 ## **🤝 Acknowledgements**
 
 * **Scrimba** for the course material and Figma UI design
-
-
 ---
 
 
