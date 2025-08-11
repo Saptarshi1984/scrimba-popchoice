@@ -1,22 +1,17 @@
-
-import {openai, supabase} from "../utils/config.js"; 
+import { openai, supabase } from "../utils/config.js";
 
 export async function main(query) {
-  
   try {
-    const match  = await getMatchedData(query);
-     
-    /*const movieContent = match[0].content; */
-    if(!match || match.length == 0) {
+    const match = await getMatchedData(query);
 
-      return  'No match found.'
-      
+    /*const movieContent = match[0].content; */
+    if (!match || match.length == 0) {
+      return "No match found.";
     }
-    const movieTitle = match[0]?.title || 'Untitled';    
+    /* const movieTitle = match[0]?.title || 'Untitled'; */
     const chatResponse = await getChatMessages(match[0].content, query);
 
     return chatResponse;
-
   } catch (error) {
     console.error("Error in the main function", error.message);
   }
@@ -36,7 +31,7 @@ export const getMatchedData = async (query) => {
     const { data, error } = await supabase.rpc("match_documents", {
       query_embedding: queryEmbedding,
       match_threshold: 0.4,
-      match_count: 2,
+      match_count: 1,
     });
 
     console.log("Mathced data found.");
@@ -50,27 +45,28 @@ export const getMatchedData = async (query) => {
 
 const chatHistory = [
   {
-  role: "system",
-  content: ` You are a movie expert. Recommend movies based on the result and user question.
+    role: "system",
+    content: ` You are a movie expert. Recommend movies based on the result and user question.
              Your context is the result of the user query. Artriculate your answer in a way that
              you are suggesting/recomending the movie to the user that you have in the result.
              Do not recommend any movies that are not in the result.
-             Use only the provided context.Please do not make up the answer.`
-}
-
+             Use only the provided context.Please do not make up the answer. if the result is empty
+             then replay accordingly.`,
+  },
 ];
 
-export const getChatMessages = async ( result, qustion ) => {
+export const getChatMessages = async (result, qustion) => {
   chatHistory.push({
     role: "user",
     content: `Context: ${result} Question: ${qustion}`,
   });
-    const res = await openai.chat.completions.create({
+  const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: chatHistory,
-    temperature: 0.7,
+    temperature: 0.5,
     frequency_penalty: 0.5,
   });
-  
-  return (res.choices[0].message.content);
+
+  console.log("Messages:", res.choices[0].message.content);
+  return res.choices[0].message.content;
 };
