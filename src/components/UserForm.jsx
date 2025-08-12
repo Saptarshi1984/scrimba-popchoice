@@ -24,6 +24,7 @@ const UserForm = ({show, setShow}) => {
       });
       
       /* Received result from the route.js and assigned to the data. */
+      
       const data = await res.json();
       setChatResponse(data.message);
       setTitle(data.title);

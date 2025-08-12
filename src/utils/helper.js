@@ -17,6 +17,11 @@ export const getMatchedData = async (query) => {
       match_count: 1,
     });
     
+    if(data.length == 0) {
+
+      console.error("No match found. Please try again!");
+    }
+
     const content = data[0].content;
     const title = data[0].title;
     
@@ -38,9 +43,8 @@ const chatHistory = [
     content: ` You are a movie expert. Recommend movies based on the result and user question.
              Your context is the result of the user query. Artriculate your answer in a way that
              you are suggesting/recomending the movie to the user that you have in the result.
-             Do not recommend any movies that are not in the result.
-             Use only the provided context.Please do not make up the answer. if the result is empty
-             then replay accordingly.`,
+             Do not recommend any movies that are not in the result. Use only the provided context. 
+             Please do not make up the answer. If the result is empty then replay accordingly.`,
   },
 ];
 
