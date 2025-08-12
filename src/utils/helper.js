@@ -1,22 +1,5 @@
 import { openai, supabase } from "../utils/config.js";
 
-export async function main(query) {
-  try {
-    const match = await getMatchedData(query);
-
-    /*const movieContent = match[0].content; */
-    if (!match || match.length == 0) {
-      return "No match found.";
-    }
-    /* const movieTitle = match[0]?.title || 'Untitled'; */
-    const chatResponse = await getChatMessages(match[0].content, query);
-
-    return chatResponse;
-  } catch (error) {
-    console.error("Error in the main function", error.message);
-  }
-}
-
 export const getMatchedData = async (query) => {
   try {
     const embeddingResponse = await openai.embeddings.create({
@@ -30,14 +13,20 @@ export const getMatchedData = async (query) => {
     /* Query supabase for nearest vector match */
     const { data, error } = await supabase.rpc("match_documents", {
       query_embedding: queryEmbedding,
-      match_threshold: 0.4,
+      match_threshold: 0.3,
       match_count: 1,
     });
+    
+    const content = data[0].content;
+    const title = data[0].title;
+    
+/*  console.log("Mathced data found.");
+    console.log("Searched data:", data[0]);
+    console.log('Title:', title);
+    console.log('Content:', content); */
 
-    console.log("Mathced data found.");
-    console.log(data);
+    return {content, title};
 
-    return data;
   } catch (error) {
     console.error("Supabase RPC error:", error.message);
   }
@@ -68,5 +57,6 @@ export const getChatMessages = async (result, qustion) => {
   });
 
   console.log("Messages:", res.choices[0].message.content);
+  
   return res.choices[0].message.content;
 };

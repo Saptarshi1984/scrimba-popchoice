@@ -1,15 +1,12 @@
-import { main, getMatchedData } from "@/utils/helper";
-
-export const runtime = 'nodejs';
+import { getMatchedData, getChatMessages } from "@/utils/helper";
 
 
 export async function POST(req) {
-  const { input } = await req.json();
-
-  const result = await main(input);
-  
+  const { input } = await req.json();  
   const matches = await getMatchedData(input);
-  const title = matches?.[0]?.title || null;
+  const message= await getChatMessages(matches.content, input);
+  const title =  matches.title; 
 
-  return Response.json({ result, title });
+  return Response.json({ message, title });
+  
 }
