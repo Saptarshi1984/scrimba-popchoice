@@ -17,24 +17,24 @@ export const getMatchedData = async (query) => {
       match_threshold: 0.3,
       match_count: 1,
     });
-    
-    if(data.length == 0) {
 
-      console.error("No match found. Please try again!");
+    if (error) {
+      console.error("Supabase RPC error:", error.message);
+      return null;
+    }
+    
+    if(data.length === 0) {
+      return null;
     }
 
     const content = data[0].content;
     const title = data[0].title;
-    
-/*  console.log("Mathced data found.");
-    console.log("Searched data:", data[0]);
-    console.log('Title:', title);
-    console.log('Content:', content); */
 
     return {content, title};
 
   } catch (error) {
     console.error("Supabase RPC error:", error.message);
+    return null;
   }
 };
 

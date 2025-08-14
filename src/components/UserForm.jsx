@@ -26,15 +26,13 @@ const UserForm = ({show, setShow}) => {
       /* Received result from the route.js and assigned to the data. */
       
       const data = await res.json();
-
-      if(data.length == 0) {
-        setChatResponse("No match found");
-      } else {
+      
+      
         
         setChatResponse(data.message);
         setTitle(data.title);
       
-      }
+      
       
     }
     
