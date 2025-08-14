@@ -1,6 +1,7 @@
 import { openai, supabase } from "../utils/config.js";
 
 export const getMatchedData = async (query) => {
+  
   try {
     const embeddingResponse = await openai.embeddings.create({
       model: "text-embedding-3-small",
@@ -37,7 +38,7 @@ export const getMatchedData = async (query) => {
   }
 };
 
-const chatHistory = [
+/* const chatHistory = [
   {
     role: "system",
     content: ` You are a movie expert. Recommend movies based on the result and user question.
@@ -46,13 +47,28 @@ const chatHistory = [
              Do not recommend any movies that are not in the result. Use only the provided context. 
              Please do not make up the answer. If the result is empty then replay accordingly.`,
   },
-];
+]; */
 
 export const getChatMessages = async (result, qustion) => {
-  chatHistory.push({
+
+  const chatHistory = [
+  {
+    role: "system",
+    content: ` You are a movie expert. Recommend movies based on the result and user question.
+             Your context is the result of the user query. Artriculate your answer in a way that
+             you are suggesting/recomending the movie to the user that you have in the result.
+             Do not recommend any movies that are not in the result. Use only the provided context. 
+             Please do not make up the answer. If the result is empty then replay accordingly.`,
+  },
+  {
     role: "user",
     content: `Context: ${result} Question: ${qustion}`,
-  });
+  }
+];
+/*   chatHistory.push({
+    role: "user",
+    content: `Context: ${result} Question: ${qustion}`,
+  }); */
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: chatHistory,
@@ -61,6 +77,6 @@ export const getChatMessages = async (result, qustion) => {
   });
 
   console.log("Messages:", res.choices[0].message.content);
-  
+  console.log(chatHistory);
   return res.choices[0].message.content;
 };
